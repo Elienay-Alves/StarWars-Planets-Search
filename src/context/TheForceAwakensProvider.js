@@ -4,15 +4,29 @@ import DarkForceContext from './DarkForceContext';
 import fetchPlanets from '../services/API';
 
 const PlanetsProvider = ({ children }) => {
-  const [data, setData] = useState([]);
-  const contextValue = { data, setData };
+  const [data, setData] = useState();
+  const [filteredName, setFilteredName] = useState({
+    name: '',
+  });
 
   const fetchData = async () => {
     const Data = await fetchPlanets();
     setData(Data);
   };
 
+  const changeFilteredName = ({ target }) => {
+    setFilteredName({
+      name: target.value,
+    });
+  };
+
   useEffect(() => { fetchData(); }, []);
+
+  const contextValue = {
+    data,
+    filteredName,
+    changeFilteredName,
+  };
 
   return (
     <DarkForceContext.Provider value={ contextValue }>
