@@ -1,9 +1,15 @@
 import React from 'react';
 import './App.css';
+import TheForceAwakensProvider from './context/TheForceAwakensProvider';
+import Table from './components/Table';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <TheForceAwakensProvider>
+      <div>
+        <Table />
+      </div>
+    </TheForceAwakensProvider>
   );
 }
 
