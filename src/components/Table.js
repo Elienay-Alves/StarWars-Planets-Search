@@ -1,12 +1,30 @@
 import React, { useContext } from 'react';
 import DarkForceContext from '../context/DarkForceContext';
 
-const searchItens = ['name', 'rotation period', 'orbital_period',
-  'diameter', 'climate', 'gravity', 'terrain', 'surface water',
+const searchItens = ['name', 'rotation_period', 'orbital_period',
+  'diameter', 'climate', 'gravity', 'terrain', 'surface_water',
   'population', 'films', 'created', 'edited', 'url'];
 
 const Table = () => {
-  const { data, filteredName, changeFilteredName } = useContext(DarkForceContext);
+  const {
+    data,
+    filteredName,
+    changeFilteredName,
+    numericFilter,
+  } = useContext(DarkForceContext);
+  const { column, comparison, value } = numericFilter[0] || '';
+
+  const filter = () => data.filter((filtered) => {
+    if (value || value === 0) {
+      if (comparison.includes('maior')) {
+        return filtered[column] > +value;
+      } if (comparison.includes('menor')) {
+        return filtered[column] < +value;
+      }
+      return filtered[column] === value;
+    }
+    return filtered;
+  });
 
   return (
     <div>
@@ -25,7 +43,7 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {data ? (data
+          {data ? (filter()
             .filter((planetFiltered) => planetFiltered.name.includes(filteredName.name))
             .map((planet) => (
               <tr key={ planet.name }>

@@ -8,6 +8,10 @@ const PlanetsProvider = ({ children }) => {
   const [filteredName, setFilteredName] = useState({
     name: '',
   });
+  const [numericFilter, setNumericFilter] = useState([]);
+  const [value, setValue] = useState(0);
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('maior que');
 
   const fetchData = async () => {
     const Data = await fetchPlanets();
@@ -20,12 +24,38 @@ const PlanetsProvider = ({ children }) => {
     });
   };
 
+  const changeNumericFilter = () => {
+    const object = {
+      column,
+      comparison,
+      value,
+    };
+    const objectValues = [...numericFilter, object];
+    setNumericFilter(objectValues);
+  };
+
+  const handleChange = ({ target }) => {
+    if (target.name === 'column') {
+      setColumn(target.value);
+    } if (target.name === 'comparison') {
+      setComparison(target.value);
+    } if (target.name === 'value') {
+      setValue(target.value);
+    }
+  };
+
   useEffect(() => { fetchData(); }, []);
 
   const contextValue = {
     data,
     filteredName,
     changeFilteredName,
+    handleChange,
+    column,
+    comparison,
+    value,
+    numericFilter,
+    changeNumericFilter,
   };
 
   return (
