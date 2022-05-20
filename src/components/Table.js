@@ -5,26 +5,31 @@ const searchItens = ['name', 'rotation_period', 'orbital_period',
   'diameter', 'climate', 'gravity', 'terrain', 'surface_water',
   'population', 'films', 'created', 'edited', 'url'];
 
-const Table = () => {
+const filter = (dataToFilter, numberFilter) => {
+  numberFilter.forEach((each) => {
+    const { column, comparison, value } = each;
+    dataToFilter = dataToFilter.filter((filtered) => {
+      if (value || value === 0) {
+        if (comparison.includes('maior')) {
+          return filtered[column] > +value;
+        } if (comparison.includes('menor')) {
+          return filtered[column] < +value;
+        }
+        return filtered[column] === value;
+      }
+      return filtered;
+    });
+  });
+  return dataToFilter;
+};
+
+function Table() {
   const {
     data,
     filteredName,
     changeFilteredName,
     numericFilter,
   } = useContext(DarkForceContext);
-  const { column, comparison, value } = numericFilter[0] || '';
-
-  const filter = () => data.filter((filtered) => {
-    if (value || value === 0) {
-      if (comparison.includes('maior')) {
-        return filtered[column] > +value;
-      } if (comparison.includes('menor')) {
-        return filtered[column] < +value;
-      }
-      return filtered[column] === value;
-    }
-    return filtered;
-  });
 
   return (
     <div>
@@ -43,7 +48,7 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {data ? (filter()
+          {data ? (filter(data, numericFilter)
             .filter((planetFiltered) => planetFiltered.name.includes(filteredName.name))
             .map((planet) => (
               <tr key={ planet.name }>
@@ -71,6 +76,6 @@ const Table = () => {
       </table>
     </div>
   );
-};
+}
 
 export default Table;
