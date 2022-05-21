@@ -2,13 +2,34 @@ import React, { useContext } from 'react';
 import DarkForceContext from '../context/DarkForceContext';
 
 const Filters = () => {
-  const { handleChange, changeNumericFilter, value } = useContext(DarkForceContext);
+  const { handleChange,
+    changeNumericFilter,
+    numericFilter,
+    value } = useContext(DarkForceContext);
   const comparisonOptions = ['maior que', 'menor que', 'igual a'];
   const columnOptions = ['population',
     'orbital_period',
     'diameter',
     'rotation_period',
     'surface_water'];
+
+  const remover = (array) => {
+    const FIVE = 5;
+    const THREE = 3;
+    if (array.length === FIVE) {
+      numericFilter.forEach(({ column }) => {
+        array.splice(array.indexOf(column), 1);
+      });
+      return array;
+    } if (array.length === THREE) {
+      numericFilter.forEach(({ comparison }) => {
+        array.splice(array.indexOf(comparison), 1);
+      });
+      return array;
+    }
+
+    return array;
+  };
 
   return (
     <div>
@@ -19,8 +40,8 @@ const Filters = () => {
           data-testid="column-filter"
           onChange={ handleChange }
         >
-          { columnOptions
-            .map((column) => <option key={ column.name }>{ column }</option>) }
+          { remover(columnOptions)
+            .map((column, index) => <option key={ index }>{ column }</option>)}
         </select>
       </label>
       <label htmlFor="comparison">
@@ -30,8 +51,8 @@ const Filters = () => {
           data-testid="comparison-filter"
           onChange={ handleChange }
         >
-          {comparisonOptions
-            .map((comparison) => <option key={ comparison.name }>{ comparison }</option>)}
+          {remover(comparisonOptions)
+            .map((comparison, index) => <option key={ index }>{ comparison }</option>)}
         </select>
       </label>
       <input
