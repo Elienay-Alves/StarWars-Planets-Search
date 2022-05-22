@@ -5,6 +5,7 @@ const Filters = () => {
   const { handleChange,
     changeNumericFilter,
     numericFilter,
+    deleteFilter,
     value } = useContext(DarkForceContext);
   const comparisonOptions = ['maior que', 'menor que', 'igual a'];
   const columnOptions = ['population',
@@ -33,42 +34,65 @@ const Filters = () => {
 
   return (
     <div>
-      <label htmlFor="column">
-        Column
-        <select
-          name="column"
-          data-testid="column-filter"
+      <div>
+        <label htmlFor="column">
+          Column
+          <select
+            name="column"
+            data-testid="column-filter"
+            onChange={ handleChange }
+          >
+            { remover(columnOptions)
+              .map((column, index) => <option key={ index }>{ column }</option>)}
+          </select>
+        </label>
+        <label htmlFor="comparison">
+          Comparison
+          <select
+            name="comparison"
+            data-testid="comparison-filter"
+            onChange={ handleChange }
+          >
+            {remover(comparisonOptions)
+              .map((comparison, index) => <option key={ index }>{ comparison }</option>)}
+          </select>
+        </label>
+        <input
+          type="number"
+          name="value"
+          data-testid="value-filter"
           onChange={ handleChange }
+          value={ value }
+        />
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ changeNumericFilter }
         >
-          { remover(columnOptions)
-            .map((column, index) => <option key={ index }>{ column }</option>)}
-        </select>
-      </label>
-      <label htmlFor="comparison">
-        Comparison
-        <select
-          name="comparison"
-          data-testid="comparison-filter"
-          onChange={ handleChange }
+          FILTER
+        </button>
+        <button
+          type="button"
+          name="filter"
+          data-testid="button-remove-filters"
+          onClick={ deleteFilter }
         >
-          {remover(comparisonOptions)
-            .map((comparison, index) => <option key={ index }>{ comparison }</option>)}
-        </select>
-      </label>
-      <input
-        type="number"
-        name="value"
-        data-testid="value-filter"
-        onChange={ handleChange }
-        value={ value }
-      />
-      <button
-        type="button"
-        data-testid="button-filter"
-        onClick={ changeNumericFilter }
-      >
-        FILTER
-      </button>
+          REMOVE FILTERS
+        </button>
+      </div>
+      <div>
+        { numericFilter.map((filter, index) => (
+          <div key={ index } data-testid="filter">
+            { `${filter.column} ${filter.comparison} ${filter.value}` }
+            <button
+              type="button"
+              onClick={ deleteFilter }
+            >
+              X
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

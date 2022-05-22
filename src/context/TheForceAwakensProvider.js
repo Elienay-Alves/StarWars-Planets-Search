@@ -46,6 +46,16 @@ const PlanetsProvider = ({ children }) => {
 
   useEffect(() => { fetchData(); }, []);
 
+  const deleteFilter = ({ target }) => {
+    if (target.name === 'filter') {
+      setNumericFilter([]);
+    } else {
+      const updatedFilter = numericFilter
+        .filter((item) => item.column !== target.parentNode.innerHTML.split(' ')[0]);
+      setNumericFilter(updatedFilter);
+    }
+  };
+
   const contextValue = {
     data,
     filteredName,
@@ -56,6 +66,7 @@ const PlanetsProvider = ({ children }) => {
     value,
     numericFilter,
     changeNumericFilter,
+    deleteFilter,
   };
 
   return (
