@@ -12,6 +12,9 @@ const PlanetsProvider = ({ children }) => {
   const [value, setValue] = useState(0);
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
+  const [columnOrder, setColumnOrder] = useState('population');
+  const [radioOrder, setRadioOrder] = useState();
+  const [order, setOrder] = useState();
 
   const fetchData = async () => {
     const Data = await fetchPlanets();
@@ -41,7 +44,19 @@ const PlanetsProvider = ({ children }) => {
       setComparison(target.value);
     } if (target.name === 'value') {
       setValue(target.value);
+    } if (target.name === 'columnOrder') {
+      setColumnOrder(target.value);
+    } if (target.name === 'radioOrder') {
+      setRadioOrder(target.value);
     }
+  };
+
+  const orderButton = () => {
+    const updatedOrder = {
+      column: columnOrder,
+      sort: radioOrder,
+    };
+    setOrder(updatedOrder);
   };
 
   useEffect(() => { fetchData(); }, []);
@@ -67,6 +82,8 @@ const PlanetsProvider = ({ children }) => {
     numericFilter,
     changeNumericFilter,
     deleteFilter,
+    order,
+    orderButton,
   };
 
   return (

@@ -6,6 +6,7 @@ const Filters = () => {
     changeNumericFilter,
     numericFilter,
     deleteFilter,
+    orderButton,
     value } = useContext(DarkForceContext);
   const comparisonOptions = ['maior que', 'menor que', 'igual a'];
   const columnOptions = ['population',
@@ -78,6 +79,44 @@ const Filters = () => {
           onClick={ deleteFilter }
         >
           REMOVE FILTERS
+        </button>
+        <label htmlFor="columnOrder">
+          Order
+          <select
+            name="columnOrder"
+            data-testid="column-sort"
+            onChange={ handleChange }
+          >
+            { columnOptions
+              .map((column, index) => <option key={ index }>{ column }</option>)}
+          </select>
+        </label>
+        <label htmlFor="ascendent-order">
+          Ascendent
+          <input
+            type="radio"
+            data-testid="column-sort-input-asc"
+            value="ascendent"
+            name="radioOrder"
+            onClick={ handleChange }
+          />
+        </label>
+        <label htmlFor="descendent-order">
+          Descendent
+          <input
+            type="radio"
+            data-testid="column-sort-input-desc"
+            value="descendent"
+            name="radioOrder"
+            onClick={ handleChange }
+          />
+        </label>
+        <button
+          type="button"
+          data-testid="column-sort-button"
+          onClick={ orderButton }
+        >
+          Set Order
         </button>
       </div>
       <div>
